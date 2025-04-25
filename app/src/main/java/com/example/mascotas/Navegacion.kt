@@ -35,5 +35,29 @@ fun Navigation() {
 
             Carnet(navController, nombre, raza, tamaño, edad, foto)
         }
+        composable(route = "Lista") {
+            ListaMascotas(navController)
+        }
+        composable(route = "Lista") {
+            ListaMascotas(navController)
+        }
+        composable(
+            "Actualizar/{nombre}/{raza}/{tamaño}/{edad}/{foto}",
+            arguments = listOf(
+                navArgument("nombre") { type = NavType.StringType },
+                navArgument("raza") { type = NavType.StringType },
+                navArgument("tamaño") { type = NavType.StringType },
+                navArgument("edad") { type = NavType.StringType },
+                navArgument("foto") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val nombre = backStackEntry.arguments?.getString("nombre") ?: ""
+            val raza = backStackEntry.arguments?.getString("raza") ?: ""
+            val tamaño = backStackEntry.arguments?.getString("tamaño") ?: ""
+            val edad = backStackEntry.arguments?.getString("edad") ?: ""
+            val foto = backStackEntry.arguments?.getString("foto") ?: ""
+
+            Actualizar(navController, nombre, raza, tamaño, edad, foto)
+        }
     }
 }

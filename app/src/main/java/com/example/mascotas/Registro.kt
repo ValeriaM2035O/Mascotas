@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.List
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -24,6 +25,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -37,6 +39,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 
+
+data class Mascota(val nombre: String, val raza: String, val tamaño: String, val edad: String, val foto: String)
+
+
+val listaMascotas = mutableStateListOf<Mascota>()
+
 @Composable
 fun Registro(navController: NavController) {
     var nombre by rememberSaveable { mutableStateOf("") }
@@ -48,25 +56,49 @@ fun Registro(navController: NavController) {
     Scaffold(
         containerColor = Color(0xFFD8CAF1),
         bottomBar = {
-            Button(
-                onClick = {
-                    navController.navigate(
-                        "Carnet/${Uri.encode(nombre)}/${Uri.encode(raza)}/${Uri.encode(tamaño)}/${Uri.encode(edad)}/${Uri.encode(foto)}"
-                    )
-                },
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF3F51B5)),
-                shape = RoundedCornerShape(14.dp),
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
             ) {
-                Icon(
-                    imageVector = Icons.Default.Check,
-                    contentDescription = "Check",
-                    tint = Color.White
-                )
-                Spacer(Modifier.width(8.dp))
-                Text("Registrar", color = Color.White, fontSize = 18.sp)
+                Button(
+                    onClick = {
+                        listaMascotas.add(Mascota(nombre, raza, tamaño, edad, foto))
+                        navController.navigate(
+                            "Carnet/${Uri.encode(nombre)}/${Uri.encode(raza)}/${Uri.encode(tamaño)}/${Uri.encode(edad)}/${Uri.encode(foto)}"
+                        )
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF3F51B5)),
+                    shape = RoundedCornerShape(14.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 8.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Check,
+                        contentDescription = "Check",
+                        tint = Color.White
+                    )
+                    Spacer(Modifier.width(8.dp))
+                    Text("Registrar", color = Color.White, fontSize = 18.sp)
+                }
+
+                Button(
+                    onClick = {
+                        navController.navigate("Lista")
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF3F51B5)),
+                    shape = RoundedCornerShape(14.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.List,
+                        contentDescription = "Lista",
+                        tint = Color.White
+                    )
+                    Spacer(Modifier.width(8.dp))
+                    Text("Lista de registros", color = Color.White, fontSize = 18.sp)
+                }
             }
         }
     ) { innerPadding ->
